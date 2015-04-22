@@ -1,0 +1,13 @@
+body {
+  x-overflow: hidden;
+}
+.page-header {
+  margin: 0 auto;
+  padding: 5px 5px 5px 25px;
+}
+.col-md-offset-1 {
+  padding-top: 10px;
+}
+color-block {
+  width: 25%;
+}
