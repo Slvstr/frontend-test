@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="main.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
   <script src="task2.js"></script>
 </head>
 <body ng-controller="MainController">
@@ -47,7 +49,7 @@
 				<!-- the following should be on the left half of the page inside a container and row -->
 				<div class="col-md-6">
 					<h1>Task 2 - Angular</h1>
-					<form ng-submit="getColors()" class="form-horizontal">
+					<form ng-submit="getColors()">
 						<div class="form-group">
 							<label for="colorInput">Enter a number between 1 and 10</label>
 							<input type="number" ng-model="numColors" class="form-control input-lg" id="colorInput" min="1" max="10" required/>							
@@ -61,14 +63,14 @@
 				<!-- the following should be on the right half of the page -->
 				<div class="col-md-5 col-md-offset-1">
 				<!-- display the colors here -->
-					<h2>Colors</h2>
+					<h1>Random Colors</h2>
 					<div class="colors row">
-						<color-block ng-repeat="color in colors | orderBy: '$index'" class="col-md-4">
+						<color-block ng-repeat="color in colors | orderBy: '$index'" class="col-md-4 random-colors">
 							<div class="thumbnail">
 								<div class="color-text">
 									<h3>#{{color}}</h3>
 								</div>
-								<div class="save-color">
+								<div class="save-color" ng-click="savedColors.$add(color)">
 									Save
 								</div>
 							</div>
@@ -77,6 +79,21 @@
 					
 				</div>
 			<!-- end of row -->			
+			</div>
+
+			<div class="colors row">
+				<div class="col-md-10 col-md-offset-1">
+					<h1 class="text-center">Saved Colors</h2>
+
+					<color-block ng-repeat="color in savedColors | orderBy: '$index'" class="col-md-3">
+						<div class="thumbnail">
+							<div class="color-text text-center">
+								<h3>#{{color.$value}}</h3>
+							</div>						
+						</div>
+					</color-block>
+
+				</div>
 			</div>
 			<!--  end of inner container -->
 		</div>

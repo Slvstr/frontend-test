@@ -32,15 +32,16 @@ body {
   font-size: 1.5em;
   text-align: center;
   padding-top: 20%;
+  cursor: pointer;
 }
 .colors color-block .color-text {
   opacity: 1;
   -webkit-transition: 0.1s linear all;
   transition: 0.1s linear all;
 }
-.colors color-block:hover .save-color {
+.colors color-block.random-colors:hover .save-color {
   transform: translateX(0);
 }
-.colors color-block:hover .color-text {
+.colors color-block.random-colors:hover .color-text {
   opacity: 0;
 }
