@@ -1,3 +1,5 @@
+$colorBoxHeight = 75px
+
 body
   x-overflow hidden
   
@@ -10,5 +12,46 @@ body
   
 .colors
   color-block
-    height 75px
+    height $colorBoxHeight
     color white
+    margin-bottom 5px
+    
+    .thumbnail
+      position relative
+      top 0
+      height $colorBoxHeight
+      overflow hidden
+      color white
+
+    
+    .save-color
+      position absolute
+      margin 0 auto
+      width 100%
+      top 0
+      transform translateX(-100%)
+      height $colorBoxHeight
+      -webkit-transition .3s linear all
+      transition .3s linear all
+      font-size 1.5em
+      text-align center
+      padding-top 20%
+      
+    .color-text
+      opacity 1
+      -webkit-transition .1s linear all
+      transition .1s linear all
+      
+  color-block:hover
+    .save-color
+      transform translateX(0)
+    
+    .color-text
+      opacity 0
+      
+
+        
+      
+
+      
+

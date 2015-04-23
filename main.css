@@ -11,4 +11,36 @@ body {
 .colors color-block {
   height: 75px;
   color: #fff;
+  margin-bottom: 5px;
+}
+.colors color-block .thumbnail {
+  position: relative;
+  top: 0;
+  height: 75px;
+  overflow: hidden;
+  color: #fff;
+}
+.colors color-block .save-color {
+  position: absolute;
+  margin: 0 auto;
+  width: 100%;
+  top: 0;
+  transform: translateX(-100%);
+  height: 75px;
+  -webkit-transition: 0.3s linear all;
+  transition: 0.3s linear all;
+  font-size: 1.5em;
+  text-align: center;
+  padding-top: 20%;
+}
+.colors color-block .color-text {
+  opacity: 1;
+  -webkit-transition: 0.1s linear all;
+  transition: 0.1s linear all;
+}
+.colors color-block:hover .save-color {
+  transform: translateX(0);
+}
+.colors color-block:hover .color-text {
+  opacity: 0;
 }
