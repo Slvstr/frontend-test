@@ -1,24 +1,48 @@
-var app = angular.module('app', ['firebase'])
+var app = angular.module('app', ['firebase', 'ngResource'])
 //modify this file however you see fit
 
-.factory('Colors', ['$http', function($http) {
-  var _baseUrl = 'http://www.colr.org/json/colors/random/';
 
-  return {
-    getColors: function(num) {
-      var _url = _baseUrl + num;
-      var results = [];
-      return $http.get(_url).then(function(data) {
-        data.data.colors.forEach(function(color) {
-          results.push(color.hex);
-        },function() {
-          results.push('error');
+.factory('RandomColors', ['$resource', function($resource) {
+  var _url = 'http://www.colr.org/json/colors/random/:numColors';
+
+  return $resource(_url, {}, {
+    query: {
+      method: 'GET',
+      isArray: true,
+      transformResponse: function(data) {
+        var _data = angular.fromJson(data);
+        console.dir(_data.colors);
+        return angular.fromJson(data).colors.map(function(colorObj) {
+          return colorObj.hex;
         });
-        return results;
-      });
+      }
     }
-  };
+  });
+
 }])
+
+
+// Old version of random colors factory using $http.  Replaced with RandomColors factor above
+// which uses $resource instead.  
+
+// .factory('Colors', ['$http', function($http) {
+//   var _baseUrl = 'http://www.colr.org/json/colors/random/';
+
+//   return {
+//     getColors: function(num) {
+//       var _url = _baseUrl + num;
+//       var results = [];
+//       return $http.get(_url).then(function(data) {
+//         data.data.colors.forEach(function(color) {
+//           results.push(color.hex);
+//         },function() {
+//           results.push('error');
+//         });
+//         return results;
+//       });
+//     }
+//   };
+// }])
 
 
 .factory('SavedColors', ['$firebaseArray', '$window', function($firebaseArray, $window) {
@@ -29,10 +53,10 @@ var app = angular.module('app', ['firebase'])
   var savedColors;
 
   /******************************************************************************
-   * Rather than making user's sign in, we treat each browser as one user
-   * Store a client ID in browser's localstorage to remember clients
+   * Rather than making users sign in, we treat each browser as one user.
+   * Store a client ID in the browser's localstorage to remember clients
    * This will be an issue if users clear the browser storage or access the site
-   * a different browser, but it is sufficient for our purposes here.
+   * from a different browser, but it is sufficient for our purposes here.
    *****************************************************************************/
   if ($window.localStorage.getItem('branch2ClientID')) {
     // Client already exists
@@ -55,17 +79,14 @@ var app = angular.module('app', ['firebase'])
 }])
 
 
-.controller('MainController', ['$scope', 'Colors', 'SavedColors', function($scope, Colors, SavedColors) {
+.controller('MainController', ['$scope', 'RandomColors', 'SavedColors', function($scope, RandomColors, SavedColors) {
   //you may need to inject more services above
-  $scope.colors = [];
+  $scope.randomColors = [];
   $scope.savedColors = SavedColors;
 
   // Fetch random colors from Colors service
   $scope.getColors = function() {
-    $scope.colors = Colors.getColors($scope.numColors).then(function(colors) {
-      $scope.colors = colors;
-      $scope.numColors = undefined;
-    });
+    $scope.randomColors = RandomColors.query({numColors: $scope.numColors});
   };
 
 
@@ -80,7 +101,7 @@ var app = angular.module('app', ['firebase'])
 
       // Handle error getting colors
       if (scope.color === 'error') {
-        scope.color = 'Error Getting color';
+        scope.color = 'Error Getting Color';
         background = '#ff0909';
 
       }
