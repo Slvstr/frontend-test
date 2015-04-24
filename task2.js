@@ -10,8 +10,6 @@ var app = angular.module('app', ['firebase', 'ngResource'])
       method: 'GET',
       isArray: true,
       transformResponse: function(data) {
-        var _data = angular.fromJson(data);
-        console.dir(_data.colors);
         return angular.fromJson(data).colors.map(function(colorObj) {
           return colorObj.hex;
         });
